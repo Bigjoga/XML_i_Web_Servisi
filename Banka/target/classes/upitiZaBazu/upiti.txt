@@ -1,0 +1,2 @@
+INSERT INTO POSLOVNA_BANKA VALUES (3, 'adrBankeC', '123', 'bankaC', '12347282', 'http://localhost:8083', null);
+INSERT INTO POSLOVNA_BANKA VALUES (4, 'adrBankeD', '124', 'bankaD', '53112214', 'http://localhost:8083', null);
