@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:mt102="http://www.ftn.com/schema/mt102"
+    targetNamespace="http://www.ftn.com/schema/mt102" elementFormDefault="qualified">
+
+
+        <xs:complexType name="mt102">
+            <xs:sequence>
+                <xs:element name="IDPoruke" type="mt102:TID"/>
+                <xs:element name="BankaDuznika" type="mt102:TBanka"/>
+                <xs:element name="BankaPoverioca" type="mt102:TBanka"/>
+                <xs:element name="UkupanIznos" type="mt102:TDecimal_15_2"/>
+                <xs:element name="SifraValute" type="mt102:TSifraValute"/>
+                <xs:element name="DatumValute" type="xs:date"/>
+                <xs:element name="Datum" type="xs:date"/>
+                <xs:element name="PojedinacnaPlacanja">
+                    <xs:complexType>
+                        <xs:sequence maxOccurs="unbounded" minOccurs="0">
+                            <xs:element name="PojedinacnoPlacanje" type="mt102:TPojedinacnoPlacanje"
+                            />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    
+
+
+    <xs:simpleType name="TID">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="50"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="TBanka">
+        <xs:sequence>
+            <xs:element name="SWIFT" type="mt102:TSWIFT"/>
+            <xs:element name="BankAccountNumber" type="mt102:TBrojRacunaBanke"/>
+        </xs:sequence>
+        <xs:attribute name="id" type="xs:string"/>
+    </xs:complexType>
+
+    <xs:simpleType name="TSWIFT">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{6}[A-Z0-9]{2}(X{3}|[A-Z0-9]{3})?"/>
+            <xs:minLength value="8"/>
+            <xs:maxLength value="11"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TBrojRacunaBanke">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{3}-\d{13}-\d{2}"/>
+            <xs:length value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TDecimal_15_2">
+        <xs:restriction base="xs:decimal">
+            <xs:totalDigits value="17"/>
+            <xs:fractionDigits value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TSifraValute">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="[A-Z]{3}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:complexType name="TPojedinacnoPlacanje">
+        <xs:sequence>
+            <xs:element name="IDNalogaZaPlacanje" type="mt102:TID"/>
+            <xs:element name="Duznik-Nalogodavac" type="mt102:TString255"/>
+            <xs:element name="SvrhaPlacanja" type="mt102:TString255"/>
+            <xs:element name="Primalac-Poverilac" type="mt102:TString255"/>
+            <xs:element name="DatumNaloga" type="xs:date"/>
+            <xs:element name="RacunDuznika" type="mt102:TBrojRacunaBanke"/>
+            <xs:element name="ModelZaduzenja" type="mt102:TModel"/>
+            <xs:element name="PozivNaBrojZaduzenja" type="mt102:TPozivNaBroj"/>
+            <xs:element name="RacunPoverioca" type="mt102:TBrojRacunaBanke"/>
+            <xs:element name="ModelOdobrenja" type="mt102:TModel"/>
+            <xs:element name="PozivNaBrojOdobrenja" type="mt102:TPozivNaBroj"/>
+            <xs:element name="Iznos" type="mt102:TDecimal_15_2"/>
+            <xs:element name="SifraValute" type="mt102:TSifraValute"/>
+        </xs:sequence>
+    </xs:complexType>
+
+    <xs:simpleType name="TString255">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1"/>
+            <xs:maxLength value="255"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TModel">
+        <xs:restriction base="xs:unsignedInt">
+            <xs:minInclusive value="10"/>
+            <xs:maxInclusive value="99"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="TPozivNaBroj">
+        <xs:restriction base="xs:string">
+            <xs:length value="20"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>

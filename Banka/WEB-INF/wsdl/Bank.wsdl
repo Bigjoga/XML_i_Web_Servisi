@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="BankaService" targetNamespace="http://www.ftn.com/banka" 
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+  xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+  xmlns:tns="http://www.ftn.com/banka" 
+  xmlns:izvod="http://www.ftn.com/schema/izvod" 
+  xmlns:mt102="http://www.ftn.com/schema/mt102" 
+  xmlns:mt103="http://www.ftn.com/schema/mt103" 
+  xmlns:mt910="http://www.ftn.com/schema/mt910" 
+  xmlns:prenos="http://www.ftn.com/schema/prenos"
+  xmlns:zahtev="http://www.ftn.com/schema/zahtev">
+  
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ftn.com/banka" targetNamespace="http://www.ftn.com/banka" version="1.0">
+      
+      <xs:import schemaLocation="../scheme/izvod_schema.xsd" namespace="http://www.ftn.com/schema/izvod"/>
+      <xs:import schemaLocation="../scheme/mt102.xsd" namespace="http://www.ftn.com/schema/mt102"/>
+      <xs:import schemaLocation="../scheme/mt103.xsd" namespace="http://www.ftn.com/schema/mt103"/>
+      <xs:import schemaLocation="../scheme/mt910.xsd" namespace="http://www.ftn.com/schema/mt910"/>
+      <xs:import schemaLocation="../scheme/nalog_za_placanje_schema.xsd" namespace="http://www.ftn.com/schema/prenos"/>
+      <xs:import schemaLocation="../scheme/zahtev_za_izvod_schema.xsd" namespace="http://www.ftn.com/schema/zahtev"/>
+
+      
+      <xs:element name="odgovor-na-placanje" type="xs:boolean"/>
+      
+      <xs:element name="clearSettleBanka">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="mt102" type="mt102:mt102"/>
+            <xs:element name="mt910" type="mt910:mt910"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+      <xs:element name="rtgsBanka">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="mt103" type="mt103:mt103"/>
+            <xs:element name="mt910" type="mt910:mt910"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      
+      
+    </xs:schema>
+  </wsdl:types>
+  
+  <wsdl:message name="nalogZaPlacanjeResponse">
+    <wsdl:part name="odgovor" element="tns:odgovor-na-placanje">
+    </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="nalogZaPlacanjeRequest">
+    <wsdl:part name="nalog" element="prenos:nalog-za-prenos">
+    </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="preuzimanjeIzvodaRequest">
+    <wsdl:part name="zahtev" element="zahtev:zahtev-za-izvod">
+    </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="preuzimanjeIzvodaResponse">
+    <wsdl:part name="izvod" element="izvod:izvod">
+    </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="rtgsBankaRequest">
+    <wsdl:part name="parameters" element="tns:rtgsBanka">
+    </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:message name="clearSettleBankaRequest">
+    <wsdl:part name="parameters" element="tns:clearSettleBanka">
+    </wsdl:part>
+  </wsdl:message>
+  
+  <wsdl:portType name="Banka">
+    
+    <wsdl:operation name="slanjeNalogaZaPlacanje">
+      <wsdl:input name="nalogZaPlacanjeRequest" message="tns:nalogZaPlacanjeRequest">
+      </wsdl:input>
+      <wsdl:output name="nalogZaPlacanjeResponse" message="tns:nalogZaPlacanjeResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="preuzimanjeIzvoda">
+      <wsdl:input name="preuzimanjeIzvodaRequest" message="tns:preuzimanjeIzvodaRequest">
+      </wsdl:input>
+      <wsdl:output name="preuzimanjeIzvodaResponse" message="tns:preuzimanjeIzvodaResponse">
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="rtgsBanka">
+      <wsdl:input name="rtgsBankaRequest" message="tns:rtgsBankaRequest">
+      </wsdl:input>
+    </wsdl:operation>
+    
+    <wsdl:operation name="clearSettleBanka">
+      <wsdl:input name="clearSettleBankaRequest" message="tns:clearSettleBankaRequest">
+      </wsdl:input>
+    </wsdl:operation>
+    
+  </wsdl:portType>
+  
+  <wsdl:binding name="BankaServiceSoapBinding" type="tns:Banka">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    
+    <!-- <wsdl:operation name="sayHello">
+      	<soap:operation soapAction="" style="document"/>
+      	<wsdl:input name="sayHello">
+        	<soap:body use="literal"/>
+      	</wsdl:input>
+      	<wsdl:output name="sayHelloResponse">
+        	<soap:body use="literal"/>
+      	</wsdl:output>
+    </wsdl:operation> -->
+    
+    <wsdl:operation name="slanjeNalogaZaPlacanje">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="nalogZaPlacanjeRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="nalogZaPlacanjeResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="preuzimanjeIzvoda">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="preuzimanjeIzvodaRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="preuzimanjeIzvodaResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    
+    <wsdl:operation name="rtgsBanka">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="rtgsBankaRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    
+    <wsdl:operation name="clearSettleBanka">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="clearSettleBankaRequest">
+        <soap:body use="literal"/>
+      </wsdl:input>
+    </wsdl:operation>
+    
+  </wsdl:binding>
+  
+  <wsdl:service name="BankaService">
+    <wsdl:port name="Banka" binding="tns:BankaServiceSoapBinding">
+      <soap:address location="http://localhost:8080/banka"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
