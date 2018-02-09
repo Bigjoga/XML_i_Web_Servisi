@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://www.ftn.com/narodna_banka"
+    xmlns:http="http://schemas.xmlsoap.org/wsdl/http/"
+    xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ws="http://www.ftn.com/narodna_banka"
+    xmlns:mt102="http://www.ftn.com/schema/mt102"
+    xmlns:mt103="http://www.ftn.com/schema/mt103"
+    xmlns:mt900="http://www.ftn.com/schema/mt900"
+    xmlns:mt910="http://www.ftn.com/schema/mt910">
+    
+    <wsdl:types>
+        <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ws="http://www.ftn.com/narodna_banka" targetNamespace="http://www.ftn.com/narodna_banka" version="1.0">
+            <xs:import schemaLocation="../NarodnaBank-schema/mt102.xsd" namespace="http://www.ftn.com/schema/mt102"/>
+            <xs:import schemaLocation="../NarodnaBank-schema/mt103.xsd" namespace="http://www.ftn.com/schema/mt103"/>
+            <xs:import schemaLocation="../NarodnaBank-schema/mt900.xsd" namespace="http://www.ftn.com/schema/mt900"/>
+            <xs:import schemaLocation="../NarodnaBank-schema/mt910.xsd" namespace="http://www.ftn.com/schema/mt910"/>
+            <xs:element name="odgovor-na-placanje" type="xs:boolean"/>
+        </xs:schema> 
+    </wsdl:types>
+    
+    <wsdl:message name="RTGSRequest">
+        <wsdl:part name="mt103" element="mt103:mt103"/>
+    </wsdl:message>
+    <wsdl:message name="RTGSResponse">
+        <wsdl:part name="mt900" element="mt900:mt900"/>
+    </wsdl:message>
+    <wsdl:message name="RTGSFault">
+        <wsdl:part name="mt103Fault" element="ws:odgovor-na-placanje"/>    
+    </wsdl:message>
+     
+    <wsdl:message name="ClearingRequest">
+        <wsdl:part name="mt102" element="mt102:mt102"/>
+    </wsdl:message>
+    <wsdl:message name="ClearingResponse">
+        <wsdl:part name="mt900" element="mt900:mt900"/>
+    </wsdl:message>
+    <wsdl:message name="ClearingFault">
+        <wsdl:part name="mt102Fault" element="ws:odgovor-na-placanje"/>
+    </wsdl:message>
+    
+    <wsdl:portType name="NarodnaBanka">
+        <wsdl:operation name="MT103ReceiveCB">
+            <wsdl:input name="mt103" message="ws:RTGSRequest"/>
+            <wsdl:output name="mt900rtgs" message="ws:RTGSResponse"/>
+            <wsdl:fault name="mt103Fault" message="ws:RTGSFault"/>
+        </wsdl:operation>
+        
+        <wsdl:operation name="MT102ReceiveCB">
+            <wsdl:input name="mt102" message="ws:ClearingRequest"/>
+            <wsdl:output name="mt900clearing" message="ws:ClearingResponse"/>
+            <wsdl:fault name="mt102Fault" message="ws:ClearingFault"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    
+    <wsdl:binding name="NarodnaBankaBinding" type="ws:NarodnaBanka">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        
+        <wsdl:operation name="MT103ReceiveCB">
+            <wsdl:input name="mt103">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="mt900rtgs">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="mt103Fault"/>
+        </wsdl:operation>
+        
+        <wsdl:operation name="MT102ReceiveCB">
+            <wsdl:input name="mt102">
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output name="mt900clearing">
+                <soap:body use="literal"/>
+            </wsdl:output>
+            <wsdl:fault name="mt102Fault"/>
+        </wsdl:operation>
+    </wsdl:binding>
+    
+    <wsdl:service name="NarodnaBankaService">
+        <wsdl:port binding="ws:NarodnaBankaBinding" name="NarodnaBanka">
+            <soap:address location="http://localhost:8080/narodna_banka"/>
+        </wsdl:port>
+    </wsdl:service>
+    
+</wsdl:definitions>
