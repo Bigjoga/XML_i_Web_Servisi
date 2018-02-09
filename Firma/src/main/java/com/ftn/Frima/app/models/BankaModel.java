@@ -1,4 +1,4 @@
-package com.ftn.Banka.app.models;
+package com.ftn.Frima.app.models;
 
 import java.io.Serializable;
 import java.util.Collection;
