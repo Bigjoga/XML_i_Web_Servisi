@@ -11,7 +11,8 @@ import com.ftn.Frima.app.models.FrimaModel;
 
 @Repository
 public interface FirmaRepository extends JpaRepository<FrimaModel, Long>{
-
+	public FrimaModel findById(Long Id);
+	public Collection<FrimaModel> findByPib(String pib);
 	public Collection<FrimaModel> findByPibNot(String pib);
 
 }

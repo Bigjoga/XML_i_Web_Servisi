@@ -1,2 +1,14 @@
-INSERT INTO POSLOVNA_BANKA VALUES (3, 'adrBankeC', '123', 'bankaC', '12347282', 'http://localhost:8083', null);
-INSERT INTO POSLOVNA_BANKA VALUES (4, 'adrBankeD', '124', 'bankaD', '53112214', 'http://localhost:8083', null);
+Banka
+INSERT INTO banka VALUES (8086, 'adresaBankaD', '2222', 'BankaD', 'DDDDRSNS', 'http://localhost:8086', null);
+INSERT INTO banka VALUES (8085, 'adresaBankaC', '1111', 'BankaC', 'CCCCRSNS', 'http://localhost:8085', null);
+Racuni banke
+INSERT INTO RACUN VALUES (1, '1111-111111111111-11', 0, 50000, 8085);
+INSERT INTO RACUN VALUES (2, '2222-222222222222-22', 0, 50000, 8086);
+Racuni firmi
+INSERT INTO RACUN VALUES (3, '1111-333333333333-33', 0, 100000, 8085);
+INSERT INTO RACUN VALUES (4, '2222-444444444444-44', 0, 100000, 8086);
+INSERT INTO RACUN VALUES (5, '2222-555555555555-55', 0, 100000, 8086);
+Firme
+INSERT INTO firma VALUES (8081, 'FirmaAdresaA', 'FirmaA', '1234',  3);
+INSERT INTO firma VALUES (8082, 'FirmaAdresaB', 'FirmaB', '23456',  4);
+INSERT INTO firma VALUES (8083, 'FirmaAdresa3', 'Firma3', '34567',  5);

@@ -19,6 +19,14 @@ public class FirmaService {
 		return firmaRepository.findByPibNot(pib);
 	}
 	
+	public Collection<FrimaModel> findByPib(String pib) {
+		return firmaRepository.findByPib(pib);
+	}
+	
+	public FrimaModel findById(Long id) {
+		return firmaRepository.findById(id);
+	}
+	
 	public void saveFirma(FrimaModel firma) {
 		firmaRepository.save(firma);
 	}

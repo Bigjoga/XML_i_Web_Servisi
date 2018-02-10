@@ -30,12 +30,10 @@ public class FakturaController {
 			value = "/cuvanjeFakture",
 			method = RequestMethod.POST,
 			produces = MediaType.APPLICATION_JSON_VALUE)
-	public boolean save(@RequestBody FakturaModel faktura){
-		fakturaService.save(faktura);
-		if(fakturaService.save(faktura)==null){
-			return false;
-		}
-		return true;
+	public FakturaModel save(@RequestBody FakturaModel faktura){
+
+
+		return fakturaService.save(faktura);
 	}
 	
 	@RequestMapping(

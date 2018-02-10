@@ -65,5 +65,13 @@ private static final long serialVersionUID = 1L;
 	public void setRezervisanaSredstva(BigDecimal rezervisanaSredstva) {
 		this.rezervisanaSredstva = rezervisanaSredstva;
 	}
+
+	public BankaModel getBanka() {
+		return banka;
+	}
+
+	public void setBanka(BankaModel banka) {
+		this.banka = banka;
+	}
 		
 }

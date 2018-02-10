@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,6 +32,9 @@ public class FrimaModel implements Serializable{
 	
 	@Column(name = "pib")
 	private String pib;
+	
+	@ManyToOne
+	private RacunModel racun;
 
 	public FrimaModel() {
 		super();
@@ -66,6 +70,14 @@ public class FrimaModel implements Serializable{
 
 	public void setPib(String pib) {
 		this.pib = pib;
+	}
+
+	public RacunModel getRacun() {
+		return racun;
+	}
+
+	public void setRacun(RacunModel racun) {
+		this.racun = racun;
 	}
 	
 }

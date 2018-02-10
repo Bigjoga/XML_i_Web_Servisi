@@ -1,0 +1,154 @@
+<div ng-init="getOstale(firma.pib)">
+<br>
+<h2>Zaglavlje fakture</h2>
+<div layout="row">
+	<div layout="column" layout-margin>
+		<div layout="row">
+			<div>
+				<label>Naziv Dobavljaca:</label>
+    			<input ng-model="firma.naziv" ng-readonly="true">
+		
+				<label>Adresa dobavljaca:</label>
+    			<input ng-model="firma.adresa" ng-readonly="true">
+    			
+				<label>PIB dobavljaca:</label>
+	    		<input ng-model="firma.pib" ng-readonly="true">
+			</div>
+			<div>
+				<label>Naziv kupca:</label>
+	    		<input ng-model="nazivKupca" ng-readonly="true" >
+	    		
+				<label>Adresa kupca:</label>
+	    		<input ng-model="adresaKupca" ng-readonly="true">
+
+				<label>PIB kupca:</label>
+	    		<input ng-model="pibKupca" ng-readonly="true">
+			</div>
+			<div>
+				<label>Broj racuna:</label>
+    			<input ng-model="brojRacuna" ng-readonly="true" >
+
+				<label>Uplata na racun:</label>
+	    		<input ng-model="firma.racun.brojRacuna" ng-readonly="true" >
+
+				<label>Datum racuna:</label>
+   				<input type="date" ng-model="datumRacuna" placeholder="Enter date" ></input>
+
+				<label>Datum valute:</label>
+	    		<input type="date" ng-model="datumValute" md-placeholder="Enter date" ></input>
+			</div>	
+		</div>	
+	</div>
+</div>
+</div>
+Izaberi kupca:
+<div class="selectContainer" >
+	<select class="form-control sirina" ng-model="kupac" ng-change="popuni(kupac)"  ng-options="kupac.naziv for kupac in ostale_firme">
+	</select>
+</div>
+
+<h2 >Dodavanje nove stavke</h2>
+
+<div layout="row">
+	<label>Naziv:</label>
+ 	<input ng-model="naziv">
+
+	<label>Kolicina:</label>
+ 	<input ng-model="kolicina" type="number">
+
+	<label>Jedinica mere:</label>
+ 	<input ng-model="jedinicaMere">
+
+	<label>Jedinicna cena:</label>
+ 	<input ng-model="jedinicnaCena" type="number">
+
+	<label>Rabat:</label>
+ 	<input ng-model="rabat" type="number">
+ 	
+	<br>
+	<button class="btn btn-primary" ng-click="dodajStavku(naziv,kolicina,jedinicaMere,jedinicnaCena,rabat)">Dodaj</button>
+
+
+<h2 >Lista Stavki</h2>
+
+<table id="tabelaStavki"   style="width: 80%;"  border = 2 >
+	<thead>
+		<tr align="center">
+			<th>Redni Broj</th>
+	     	<th>Naziv</th>
+	     	<th>Kolicina</th>
+			<th>Jedinica mere</th>
+		    <th>Jedinicna cena</th>
+		    <th>Vrednost</th>
+		    <th>Rabat (%)</th> 
+		    <th>Iznos rabata</th>
+		    <th>Umanjeno za rabat</th>
+        	<th>Ukupno</th>
+		</tr>
+  	</thead>
+  	<tbody>
+		<tr ng-repeat="stavka in lista_stavki  ">
+			<td  align="center" >
+				{{ stavka.redniBroj }}
+			</td>
+			
+			<td  align="center" >
+				{{  stavka.naziv }}
+			</td>
+			<td  align="center" >
+				{{  stavka.kolicina }}
+			</td>
+			<td  align="center" >
+				{{  stavka.jedinicaMere }}
+			</td>
+			<td  align="center" >
+				{{  stavka.jedinicnaCena }}
+			</td>
+			<td  align="center" >
+			    {{ stavka.vrednost}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.rabat}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.iznosRabata}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.umanjenoZaRabat}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.ukupno}}
+			</td>	
+		</tr>
+	</tbody>
+</table>
+
+
+
+<br>
+<div>
+
+	<label>Vrednost robe</label>
+	<input ng-model="vrednostRobe" ng-readonly="true">
+	
+	<label>Vrednost usluga:</label>
+	<input ng-model="vrednostUsluga" type="number" >
+	
+	<label>Ukupno roba i usluge:</label>
+	<input ng-model="ukupnoRobaIUsluge" ng-readonly="true" >
+	<br>
+	<label>Ukupno rabat:</label>
+	<input ng-model="ukupnoRabat" type="number" ng-readonly="true">
+	
+	<label>Oznaka valute:</label>
+	<input ng-model="oznakaValute">
+	
+	<label>Iznos za uplatu:</label>
+	<input ng-model="iznosZaUplatu" ng-readonly="true">
+	
+</div>
+<button class="btn btn-primary" ng-click="izracunajRacun(vrednostUsluga)">Izracunaj Racun</button>
+<button class="btn btn-primary" ng-click="posaljiFakturu()">Posalji Fakturu</button>
+</div>
+
+

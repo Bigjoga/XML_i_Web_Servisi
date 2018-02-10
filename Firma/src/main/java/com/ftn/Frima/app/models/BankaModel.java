@@ -45,8 +45,7 @@ public class BankaModel implements Serializable{
 	@ManyToOne
 	private RacunModel racunBanke;
 	
-	@OneToMany(mappedBy = "banka", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	private Collection<RacunModel> racuniFirme;
+	
 
 	public BankaModel() {
 		
@@ -112,12 +111,6 @@ public class BankaModel implements Serializable{
 		this.racunBanke = racunBanke;
 	}
 
-	public Collection<RacunModel> getRacuniFirme() {
-		return racuniFirme;
-	}
-
-	public void setRacuniFirme(Collection<RacunModel> racuniFirme) {
-		this.racuniFirme = racuniFirme;
-	}
+	
 		
 }
