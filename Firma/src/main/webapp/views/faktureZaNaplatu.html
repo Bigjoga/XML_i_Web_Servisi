@@ -1,0 +1,70 @@
+<div ng-init="preuzmiFaktureZaNaplatu()">
+
+<h2 >Fakture za Naplatu</h2>
+
+<table id="tabelaStavki"   style="width: 80%;"  border = 2 >
+	<thead>
+		<tr align="center">
+			<th>Naziv Kupca</th>
+	     	<th>Adresa Kupca</th>
+	     	<th>Pib Kupca</th>
+	     	<th>Broj Racuna</th>
+			<th>Datum Racuna</th>
+		    <th>Vrednost Robe</th>
+		    <th>Vrednost Usluga</th>
+		    <th>Vrednost Robe i Usluga</th> 
+		    <th>Ukupno Rabat</th>
+		    <th>Ukupno Porez</th>
+        	<th>Oznaka Valute</th>
+        	<th>Iznos Za Uplatu</th>
+        	<th>Datum Valute</th>
+		</tr>
+  	</thead>
+  	<tbody>
+		<tr ng-repeat="faktura in faktureZaNaplatu  ">
+			<td  align="center" >
+				{{  faktura.nazivKupca }}
+			</td>
+			<td  align="center" >
+				{{  faktura.adresaKupca }}
+			</td>
+			<td  align="center" >
+				{{  faktura.pibKupca }}
+			</td>
+			<td  align="center"  >
+			    {{ faktura.brojRacuna}}
+			</td>
+			<td  align="center" >
+				{{  faktura.datumRacuna }}
+			</td>
+			<td  align="center" >
+			    {{ faktura.vrednostRobe}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.vrednostUsluga}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.ukupnoRobaIUsluge}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.ukupnoRabat}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.ukupnoPorez}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.oznakaValute}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.iznosZaUplatu}}
+			</td>
+			<td  align="center" >
+			    {{ faktura.datumValute}}
+			</td>	
+		</tr>
+	</tbody>
+</table>
+
+
+
+</div>

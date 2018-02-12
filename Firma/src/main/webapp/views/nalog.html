@@ -1,0 +1,57 @@
+<div >
+
+<h2 >Nalog Za Prenos</h2>
+
+<div>
+	<label>Duznik-nalogodavac:</label>
+   	<input ng-model="firma.naziv" ng-readonly="true">
+   	<label>Svrha placanja:</label>
+	<input ng-model="svrhaPlacanja" >
+	<label>Primalac-poverilac:</label>
+    <input ng-model="firma.adresa" ng-readonly="true">
+</div>
+<div>
+   	<label>Datum Naloga:</label>
+   	<input ng-model="faktura.datumRacuna" ng-readonly="true">
+   	<label>Datum Valute:</label>
+   	<input ng-model="faktura.datumValute" ng-readonly="true">
+   	<label>Racun Duznika:</label>
+   	<input ng-model="faktura.brojRacuna" ng-readonly="true">
+</div>
+<div>
+   	<label>Model Zaduzenja:</label>
+   	<input ng-model="modelZaduzenja">
+   	<label>Poziv Na Broj Zaduzenja:</label>
+   	<input ng-model="pozivNaBrojZaduzenja" >
+   	<label>Racun Poverioca:</label>
+   	<input ng-model="faktura.uplataNaRacun" ng-readonly="true">
+</div>
+<div>
+   	<label>Model Odobrenja:</label>
+   	<input ng-model="modelOdobrenja">
+   	<label>Poziv Na Broj Odobrenja:</label>
+   	<input ng-model="pozivNaBrojOdobrenja" >
+   	<label>Iznos:</label>
+   	<input ng-model="faktura.iznosZaUplatu" ng-readonly="true">
+</div>
+<div>
+   	<label>Oznaka Valute:</label>
+   	<input ng-model="faktura.oznakaValute" ng-readonly="true">
+   	<label>Hitno:</label>
+   	<input type="checkbox" ng-model="hitno" >
+	<button class="btn btn-primary" ng-click="posaljiNalog(svrhaPlacanja,modelZaduzenja,pozivNaBrojZaduzenja,pozivNaBrojZaduzenja,modelOdobrenja,pozivNaBrojOdobrenja,hitno)">Posalji Nalog</button>
+</div>
+<div>
+
+
+</div>	
+    	
+    	
+    	
+
+
+
+
+
+
+</div>

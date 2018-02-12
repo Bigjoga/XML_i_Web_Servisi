@@ -11,6 +11,18 @@ app.config(function($stateProvider,$urlRouterProvider) {
 		url:'/slanjeFakture',
 		templateUrl:'views/slanjeFakture.html',
 		controller:'appController'
+	}).state('faktureZaPlacanje',{
+		url:'/faktureZaPlacanje',
+		templateUrl:'views/faktureZaPlacanje.html',
+		controller:'appController'
+	}).state('faktureZaNaplatu',{
+		url:'/faktureZaNaplatu',
+		templateUrl:'views/faktureZaNaplatu.html',
+		controller:'appController'
+	}).state('nalog',{
+		url:'/nalog',
+		templateUrl:'views/nalog.html',
+		controller:'appController'
 	});
 	$urlRouterProvider.otherwise('/');
 	
