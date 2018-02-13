@@ -38,19 +38,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TUplata }
-     * 
-     */
-    public TUplata createTUplata() {
-        return new TUplata();
-    }
-
-    /**
      * Create an instance of {@link TPlacanje }
      * 
      */
     public TPlacanje createTPlacanje() {
         return new TPlacanje();
+    }
+
+    /**
+     * Create an instance of {@link TUplata }
+     * 
+     */
+    public TUplata createTUplata() {
+        return new TUplata();
     }
 
     /**

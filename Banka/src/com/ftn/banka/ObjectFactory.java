@@ -34,19 +34,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RtgsBanka }
-     * 
-     */
-    public RtgsBanka createRtgsBanka() {
-        return new RtgsBanka();
-    }
-
-    /**
      * Create an instance of {@link ClearSettleBanka }
      * 
      */
     public ClearSettleBanka createClearSettleBanka() {
         return new ClearSettleBanka();
+    }
+
+    /**
+     * Create an instance of {@link RtgsBanka }
+     * 
+     */
+    public RtgsBanka createRtgsBanka() {
+        return new RtgsBanka();
     }
 
     /**

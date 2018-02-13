@@ -11,18 +11,21 @@
     xmlns:mt102="http://www.ftn.com/schema/mt102"
     xmlns:mt103="http://www.ftn.com/schema/mt103"
     xmlns:mt900="http://www.ftn.com/schema/mt900"
-    xmlns:mt910="http://www.ftn.com/schema/mt910">
+    xmlns:mt910="http://www.ftn.com/schema/mt910"
+    >
     
     <wsdl:types>
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ws="http://www.ftn.com/narodna_banka" targetNamespace="http://www.ftn.com/narodna_banka" version="1.0">
-            <xs:import schemaLocation="../NarodnaBank-schema/mt102.xsd" namespace="http://www.ftn.com/schema/mt102"/>
-            <xs:import schemaLocation="../NarodnaBank-schema/mt103.xsd" namespace="http://www.ftn.com/schema/mt103"/>
-            <xs:import schemaLocation="../NarodnaBank-schema/mt900.xsd" namespace="http://www.ftn.com/schema/mt900"/>
-            <xs:import schemaLocation="../NarodnaBank-schema/mt910.xsd" namespace="http://www.ftn.com/schema/mt910"/>
+            <xs:import schemaLocation="../CB_XML-Schema/mt102.xsd" namespace="http://www.ftn.com/schema/mt102"/>
+            <xs:import schemaLocation="../CB_XML-Schema/mt103.xsd" namespace="http://www.ftn.com/schema/mt103"/>
+            <xs:import schemaLocation="../CB_XML-Schema/mt900.xsd" namespace="http://www.ftn.com/schema/mt900"/>
+            <xs:import schemaLocation="../CB_XML-Schema/mt910.xsd" namespace="http://www.ftn.com/schema/mt910"/>
+           
             <xs:element name="odgovor-na-placanje" type="xs:boolean"/>
-        </xs:schema> 
+        </xs:schema>
     </wsdl:types>
     
+    <!-- 1.4.1 RTGS -->
     <wsdl:message name="RTGSRequest">
         <wsdl:part name="mt103" element="mt103:mt103"/>
     </wsdl:message>
@@ -32,7 +35,8 @@
     <wsdl:message name="RTGSFault">
         <wsdl:part name="mt103Fault" element="ws:odgovor-na-placanje"/>    
     </wsdl:message>
-     
+    
+    <!-- 1.4.1. Clearing & Settlement -->
     <wsdl:message name="ClearingRequest">
         <wsdl:part name="mt102" element="mt102:mt102"/>
     </wsdl:message>
@@ -43,6 +47,7 @@
         <wsdl:part name="mt102Fault" element="ws:odgovor-na-placanje"/>
     </wsdl:message>
     
+    <!-- NarodnaBanka Port Type -->
     <wsdl:portType name="NarodnaBanka">
         <wsdl:operation name="MT103ReceiveCB">
             <wsdl:input name="mt103" message="ws:RTGSRequest"/>
@@ -57,6 +62,7 @@
         </wsdl:operation>
     </wsdl:portType>
     
+    <!-- NarodnaBanka Binding -->
     <wsdl:binding name="NarodnaBankaBinding" type="ws:NarodnaBanka">
         <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
         
@@ -81,6 +87,7 @@
         </wsdl:operation>
     </wsdl:binding>
     
+    <!-- NarodnaBanka Service -->
     <wsdl:service name="NarodnaBankaService">
         <wsdl:port binding="ws:NarodnaBankaBinding" name="NarodnaBanka">
             <soap:address location="http://localhost:8080/narodna_banka"/>

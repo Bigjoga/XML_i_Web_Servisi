@@ -31,7 +31,7 @@ public class BankaService extends Service {
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(BankaService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/Rale/Desktop/XML/Ve≈æbe/Ve≈æbe 09/JAX-WS (Example 3)/WEB-INF/wsdl/Bank.wsdl");
+                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/Rale/Desktop/XML/Veûbe/Veûbe 09/JAX-WS (Example 3)/WEB-INF/wsdl/Bank.wsdl");
         }
         WSDL_LOCATION = url;
     }
