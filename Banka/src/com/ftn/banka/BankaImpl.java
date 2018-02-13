@@ -33,6 +33,10 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 
 
+
+
+import com.ftn.Frima.app.models.BankaModel;
+import com.ftn.Frima.app.models.Baza;
 import com.ftn.Frima.app.models.FrimaModel;
 import com.ftn.schema.mt103.Mt103;
 import com.ftn.schema.mt103.TBanka;
@@ -64,14 +68,12 @@ public class BankaImpl implements Banka {
      * @see com.ftn.banka.Banka#rtgsBanka(com.ftn.schema.mt103.Mt103  mt103 ,)com.ftn.schema.mt910.Mt910  mt910 )*
      */
     public void rtgsBanka(com.ftn.schema.mt103.Mt103 mt103,com.ftn.schema.mt910.Mt910 mt910) { 
-        LOG.info("Executing operation rtgsBanka");
-        System.out.println(mt103);
-        System.out.println(mt910);
-        try {
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
+        Baza.init();
+    	System.out.println("NarodnaBanka je poslala MT103: "+mt103.getIdPoruke() +" i MT910"+mt910.getIdPoruke());
+        FrimaModel fimaPoverioc=Baza.getFirmaByRacun(mt103.getBanke().getBankaPoverioca().getBankAccountNumber());
+        fimaPoverioc.getRacun().setTrenutnoStanje(new BigDecimal(fimaPoverioc.getRacun().getTrenutnoStanje().intValue()+ mt103.getUplata().getIznos().intValue()));
+        System.out.println("Firma Stanje: "+fimaPoverioc.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+fimaPoverioc.getRacun().getRezervisanaSredstva());
+
     }
 
     /* (non-Javadoc)
@@ -80,7 +82,9 @@ public class BankaImpl implements Banka {
     public boolean slanjeNalogaZaPlacanje(com.ftn.schema.prenos.NalogZaPrenos nalog){ 
         
     	System.out.println("Slanje naloga, id: " + nalog.getIdPoruke());
+    	Baza.init();
     	
+
     	String racunDuznik=nalog.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna();
     	String racunPoverilac=nalog.getPodaciOPrenosu().getPoverilacPrenos().getBrojRacuna();
     	
@@ -96,14 +100,28 @@ public class BankaImpl implements Banka {
     		if(iznos.intValue()>=250000 || nalog.isHitno()){
     			System.out.println("RTGS!");
     			
+    			
+    			FrimaModel firmaDuznik=Baza.getFirmaByRacun(nalog.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna());
+    	    	BankaModel CB=Baza.getBankByRacun("8080-000000000000-00");
+    	    	
+    	    	
+    	    	System.out.println("Banka rezervise sredstva sa Racuna duznika!");
+    	    	System.out.println("Firma Stanje: "+firmaDuznik.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+firmaDuznik.getRacun().getRezervisanaSredstva());
+    	    	firmaDuznik.getRacun().setRezervisanaSredstva(new BigDecimal(firmaDuznik.getRacun().getRezervisanaSredstva().intValue()+ nalog.getPodaciOPrenosu().getIznos().intValue()));
+    	    	firmaDuznik.getRacun().setTrenutnoStanje(new BigDecimal(firmaDuznik.getRacun().getTrenutnoStanje().intValue()- nalog.getPodaciOPrenosu().getIznos().intValue()));
+    	    	System.out.println("Firma Novo Stanje: "+firmaDuznik.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+firmaDuznik.getRacun().getRezervisanaSredstva());
+    	    	
+    	    	CB.getRacunBanke().setTrenutnoStanje(new BigDecimal(CB.getRacunBanke().getTrenutnoStanje().intValue()+ nalog.getPodaciOPrenosu().getIznos().intValue()));
+    	    	System.out.println("CB Stanje: "+CB.getRacunBanke().getTrenutnoStanje());
+    			
     			Mt103 mt103=new Mt103();
     			mt103.setIdPoruke(UUID.randomUUID().toString().replaceAll("-", ""));
     			Banke banke=new Banke();
     			TBanka duznik=new TBanka();
     			TBanka poverioc=new TBanka();
-    			duznik.setBankAccountNumber("RACUN BANKE!");
+    			duznik.setBankAccountNumber(racunDuznik);
     			duznik.setSWIFT(swiftD);
-    			poverioc.setBankAccountNumber("RACUN BANKE!");
+    			poverioc.setBankAccountNumber(racunPoverilac);
     			poverioc.setSWIFT(swiftP);
     			
     			TUplata uplata=new TUplata();
@@ -167,7 +185,10 @@ public class BankaImpl implements Banka {
     			mt910.setBankaPoverilac(pover);
     			
     			
-    			
+    			System.out.println("Banka Skida pare sa racuna klijenta");
+    	    	firmaDuznik.getRacun().setRezervisanaSredstva(new BigDecimal(firmaDuznik.getRacun().getRezervisanaSredstva().intValue()- nalog.getPodaciOPrenosu().getIznos().intValue()));
+    	    	System.out.println("Firma Novo Stanje: "+firmaDuznik.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+firmaDuznik.getRacun().getRezervisanaSredstva());
+
     			
     			
     	//		String str = new Requests().makeGetRequest("http://localhost:8082/getFirma/19");
@@ -193,6 +214,11 @@ public class BankaImpl implements Banka {
     			
     		}else{
     			System.out.println("Clearing & Settlement!");
+    			
+    			
+    			
+    			
+    			
     		}
     		
     		

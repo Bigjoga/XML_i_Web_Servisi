@@ -6,6 +6,8 @@
 
 package com.ftn.narodna_banka;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -15,7 +17,15 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.namespace.QName;
 
+
+
+
+
+import com.ftn.banka.Banka;
+import com.ftn.schema.mt102.Mt102.PojedinacnaPlacanja;
+import com.ftn.schema.mt102.TPojedinacnoPlacanje;
 import com.ftn.schema.mt900.Mt900;
 import com.ftn.schema.mt900.TBanka;
 import com.ftn.schema.mt910.Mt910;
@@ -67,6 +77,26 @@ public class NarodnaBankaImpl implements NarodnaBanka {
        mt910.setSifraValute(mt103.getUplata().getSifraValute());
        mt910.setBankaPoverilac(poverilac);
 
+       try {
+
+			URL wsdlLocation = new URL("http://localhost:"+mt910.getBankaPoverilac().getSWIFT()+"/banka/services/Banka?wsdl");
+			QName serviceName = new QName("http://www.ftn.com/banka", "BankaService");
+           QName portName = new QName("http://www.ftn.com/banka", "Banka");
+           
+           javax.xml.ws.Service service = javax.xml.ws.Service.create(wsdlLocation, serviceName);
+			
+			Banka banka = service.getPort(portName, Banka.class); 
+	    	   System.out.println("Narodna Banka salje MT103: "+mt103.getIdPoruke()+" Banci na portu: "+mt910.getBankaPoverilac().getSWIFT());
+	    	   System.out.println("Narodna Banka salje MT910: "+mt910.getIdPoruke()+" Banci na portu: "+mt910.getBankaPoverilac().getSWIFT());		
+			banka.rtgsBanka(mt103, mt910);
+			
+			
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+       
+       System.out.println("Narodna Banka salje MT900: "+mt900.getIdPoruke()+" Banci na portu: "+mt103.getBanke().getBankaDuznika().getSWIFT());
        return mt900;
     }
 
@@ -74,7 +104,13 @@ public class NarodnaBankaImpl implements NarodnaBanka {
      * @see com.ftn.narodna_banka.NarodnaBanka#mt102ReceiveCB(com.ftn.schema.mt102.Mt102  mt102 )*
      */
     public com.ftn.schema.mt900.Mt900 mt102ReceiveCB(com.ftn.schema.mt102.Mt102 mt102) throws ClearingFault    { 
-        LOG.info("Executing operation mt102ReceiveCB");
+        
+    	
+    	for(TPojedinacnoPlacanje pp:   mt102.getPojedinacnaPlacanja().getPojedinacnoPlacanje()){
+    		
+    	}
+    	
+    	LOG.info("Executing operation mt102ReceiveCB");
         System.out.println(mt102);
         try {
             com.ftn.schema.mt900.Mt900 _return = null;
