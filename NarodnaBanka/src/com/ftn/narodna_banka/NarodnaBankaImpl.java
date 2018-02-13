@@ -51,13 +51,20 @@ public class NarodnaBankaImpl implements NarodnaBanka {
        mt900.setDatumValute(mt103.getUplata().getDatumNaloga());
        mt900.setIznos(mt103.getUplata().getIznos());
        mt900.setSifraValute(mt103.getUplata().getSifraValute());
-      
        mt900.setBankaDuznik(duznik);
        
        Mt910 mt910=new Mt910();
-       com.ftn.schema.mt910.TBanka asd=new com.ftn.schema.mt910.TBanka();
+       com.ftn.schema.mt910.TBanka poverilac=new com.ftn.schema.mt910.TBanka();
        
-       
+       mt910.setIdPoruke(UUID.randomUUID().toString().replaceAll("-", ""));
+       poverilac.setSWIFT(mt103.getBanke().getBankaPoverioca().getSWIFT());
+       poverilac.setBankAccountNumber(mt103.getBanke().getBankaPoverioca().getBankAccountNumber());
+       mt910.setIdPorukeNaloga("mt103");
+       mt910.setDatumValute(mt103.getUplata().getDatumNaloga());
+       mt910.setIznos(mt103.getUplata().getIznos());
+       mt910.setSifraValute(mt103.getUplata().getSifraValute());
+       mt910.setBankaPoverilac(poverilac);
+
        return mt900;
     }
 
