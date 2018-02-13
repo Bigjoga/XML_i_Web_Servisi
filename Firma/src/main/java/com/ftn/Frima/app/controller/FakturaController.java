@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.ftn.Frima.app.models.FakturaModel;
 import com.ftn.Frima.app.models.FakturaStavkaModel;
+import com.ftn.Frima.app.models.nalog.NalogZaPrenos;
 import com.ftn.Frima.app.service.FakturaService;
 import com.ftn.Frima.app.service.FakturaStavkaService;
 
@@ -69,6 +70,8 @@ public class FakturaController {
 		Collection<FakturaModel> faktureZaNaplatu = fakturaService.findByPibDobavljaca(pibFirme);
 		return faktureZaNaplatu;
 	}
+	
+	
 	
 
 

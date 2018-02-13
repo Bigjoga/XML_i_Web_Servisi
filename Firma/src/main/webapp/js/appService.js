@@ -36,5 +36,9 @@ services.service('appService', ['$http', '$rootScope',
 	this.preuzmiFaktureZaNaplatu=function(pib){
 		return $http.get("http://localhost:"+window.location.port+"/faktura/faktureZaNaplatu/"+pib);
 	};
+	
+	this.kreirajNalogZaPlacanje=function(fakturaId,svrhaPlacanja,modelZaduzenja,pozivNaBrojZaduzenja,modelOdobrenja,pozivNaBrojOdobrenja,hitno){
+		return $http.post("http://localhost:"+window.location.port+"/firma/nalog/kreirajNalogZaPlacanje/"+fakturaId+"/"+ svrhaPlacanja+"/"+modelZaduzenja +"/"+pozivNaBrojZaduzenja +"/"+modelOdobrenja +"/"+pozivNaBrojOdobrenja +"/"+hitno);
+	};
 }
 ]);

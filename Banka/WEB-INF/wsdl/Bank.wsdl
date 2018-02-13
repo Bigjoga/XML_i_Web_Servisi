@@ -16,12 +16,12 @@
   <wsdl:types>
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.ftn.com/banka" targetNamespace="http://www.ftn.com/banka" version="1.0">
       
-      <xs:import schemaLocation="../scheme/izvod_schema.xsd" namespace="http://www.ftn.com/schema/izvod"/>
-      <xs:import schemaLocation="../scheme/mt102.xsd" namespace="http://www.ftn.com/schema/mt102"/>
-      <xs:import schemaLocation="../scheme/mt103.xsd" namespace="http://www.ftn.com/schema/mt103"/>
-      <xs:import schemaLocation="../scheme/mt910.xsd" namespace="http://www.ftn.com/schema/mt910"/>
-      <xs:import schemaLocation="../scheme/nalog_za_placanje_schema.xsd" namespace="http://www.ftn.com/schema/prenos"/>
-      <xs:import schemaLocation="../scheme/zahtev_za_izvod_schema.xsd" namespace="http://www.ftn.com/schema/zahtev"/>
+      <xs:import schemaLocation="C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/Banka/WEB-INF/scheme/izvod_schema.xsd" namespace="http://www.ftn.com/schema/izvod"/>
+      <xs:import schemaLocation="C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/Banka/WEB-INF/scheme/mt102.xsd" namespace="http://www.ftn.com/schema/mt102"/>
+      <xs:import schemaLocation="C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/Banka/WEB-INF/scheme/mt103.xsd" namespace="http://www.ftn.com/schema/mt103"/>
+      <xs:import schemaLocation="C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/Banka/WEB-INF/scheme/mt910.xsd" namespace="http://www.ftn.com/schema/mt910"/>
+      <xs:import schemaLocation="C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/Banka/WEB-INF/scheme/nalog_za_placanje_schema.xsd" namespace="http://www.ftn.com/schema/prenos"/>
+      <xs:import schemaLocation="C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/Banka/WEB-INF/scheme/zahtev_za_izvod_schema.xsd" namespace="http://www.ftn.com/schema/zahtev"/>
 
       
       <xs:element name="odgovor-na-placanje" type="xs:boolean"/>

@@ -405,7 +405,7 @@ public class NalogZaPrenos {
          *     
          */
         public void setPoverilacPrenos(TOsobaPrenos value) {
-            this.poverilacPrenos = value;z
+            this.poverilacPrenos = value;
         }
 
     }

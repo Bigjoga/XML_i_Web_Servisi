@@ -20,7 +20,7 @@
 </div>
 <div>
    	<label>Model Zaduzenja:</label>
-   	<input ng-model="modelZaduzenja">
+   	<input type="number" ng-model="modelZaduzenja">
    	<label>Poziv Na Broj Zaduzenja:</label>
    	<input ng-model="pozivNaBrojZaduzenja" >
    	<label>Racun Poverioca:</label>
@@ -28,7 +28,7 @@
 </div>
 <div>
    	<label>Model Odobrenja:</label>
-   	<input ng-model="modelOdobrenja">
+   	<input type="number" ng-model="modelOdobrenja">
    	<label>Poziv Na Broj Odobrenja:</label>
    	<input ng-model="pozivNaBrojOdobrenja" >
    	<label>Iznos:</label>
@@ -38,8 +38,8 @@
    	<label>Oznaka Valute:</label>
    	<input ng-model="faktura.oznakaValute" ng-readonly="true">
    	<label>Hitno:</label>
-   	<input type="checkbox" ng-model="hitno" >
-	<button class="btn btn-primary" ng-click="posaljiNalog(svrhaPlacanja,modelZaduzenja,pozivNaBrojZaduzenja,pozivNaBrojZaduzenja,modelOdobrenja,pozivNaBrojOdobrenja,hitno)">Posalji Nalog</button>
+   	<input type="checkbox"  ng-model="hitno" >
+	<button class="btn btn-primary" ng-click="kreirajNalogZaPlacanje(svrhaPlacanja,modelZaduzenja,pozivNaBrojZaduzenja,pozivNaBrojZaduzenja,modelOdobrenja,pozivNaBrojOdobrenja,hitno)">Posalji Nalog</button>
 </div>
 <div>
 
