@@ -22,7 +22,7 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 			$scope.pibKupca=kupac.pib;
 			$scope.brojRacuna=kupac.racun.brojRacuna;
 			
-		}
+		};
 		
 		$scope.dodajStavku=function(naziv,kolicina,jedinicaMere,jedinicnaCena,rabat){
 			var stavka={
@@ -36,9 +36,9 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 			    iznosRabata: rabat*jedinicnaCena/100,
 			    umanjenoZaRabat: kolicina*jedinicnaCena*rabat/100,
 			    ukupno: kolicina*jedinicnaCena-kolicina*jedinicnaCena*rabat/100
-			}
+			};
 			$scope.lista_stavki.push(stavka);
-		}
+		};
 		
 		$scope.izracunajRacun=function(vrednostUsluga){
 			$scope.vrednostRobe=0;
@@ -55,17 +55,17 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 				
 				$scope.ukupnoRabat+=stavka.umanjenoZaRabat;
 				
-				$scope.$apply
-	        })
+				$scope.$apply;
+	        });
 			if(vrednostUsluga==null || vrednostUsluga==undefined){
 				return
 			}else{
 				$scope.ukupnoRobaIUsluge+=vrednostUsluga;
 			}
 			$scope.iznosZaUplatu=$scope.ukupnoRobaIUsluge-$scope.ukupnoRabat;
-		}
+		};
 		
-		$scope.posaljiFakturu=function(){
+		$scope.posaljiFakturu=function(datumRacuna,datumValute,oznakaValute,vrednostUsluga){
 			var faktura ={
 					nazivDobavljaca: $scope.firma.naziv,
 					adresaDobavljaca : $scope.firma.adresa,
@@ -74,26 +74,56 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 					adresaKupca : $scope.adresaKupca,
 					pibKupca : $scope.pibKupca,
 					brojRacuna : $scope.brojRacuna,
-					datumRacuna : $scope.datumRacuna,
+					datumRacuna : datumRacuna,
 					vrednostRobe : $scope.vrednostRobe,
-					vrednostUsluga : $scope.vrednostUsluga,
+					vrednostUsluga : vrednostUsluga,
 					ukupnoRobaIUsluge : $scope.ukupnoRobaIUsluge,
 					ukupnoRabat : $scope.ukupnoRabat,
-					ukupnoPorez : 0,
-					oznakaValute : $scope.oznakaValute,
-					iznosZaUplatu : $scope.iznosZaUplatu,
+					ukupnoPorez : $scope.ukupnoRobaIUsluge*0.1,
+					oznakaValute : oznakaValute,
+					iznosZaUplatu : $scope.iznosZaUplatu+$scope.ukupnoRobaIUsluge*0.1,
 					uplataNaRacun : $scope.firma.racun.brojRacuna,
-					datumValute : $scope.datumValute		
-			}
-
+					datumValute : datumValute		
+			};
 			appService.cuvanjeFakture(faktura).then(function(response){ 
 				
 				for (var i = 0; i < $scope.lista_stavki.length; i++) {
 					appService.cuvanjeStavke(response.data.id, $scope.lista_stavki[i]).then(function(response){ 
-						console.log(response.data);
+
 					});
 				}	
 			});
-		}
+				alert("Faktura je poslata!");
+		};
+		
+		$scope.preuzimiFaktureZaPlacanje=function(){
+			appService.preuzimiFaktureZaPlacanje($scope.firma.pib).then(function(response){
+				$scope.faktureZaPlacanje=response.data;		
+			});
+		};
+		
+		$scope.preuzmiFaktureZaNaplatu=function(){
+			appService.preuzmiFaktureZaNaplatu($scope.firma.pib).then(function(response){
+				$scope.faktureZaNaplatu=response.data;		
+			});
+		};
+		
+		$scope.platiFakturu=function(faktura){
+			console.log(faktura);
+			$scope.faktura=faktura;
+			$window.location.href = "/#/nalog";
+		};
+		
+		$scope.kreirajNalogZaPlacanje=function(svrhaPlacanja,modelZaduzenja,pozivNaBrojZaduzenja,pozivNaBrojZaduzenja,modelOdobrenja,pozivNaBrojOdobrenja,hitno){
+			if(hitno==undefined || hitno==null){
+				hitno=false;
+			}
+			
+			appService.kreirajNalogZaPlacanje($scope.faktura.id,svrhaPlacanja,modelZaduzenja,pozivNaBrojZaduzenja,modelOdobrenja,pozivNaBrojOdobrenja,hitno).then(function(response){
+				
+			});
+			
+			
+		};
 }
 ]);

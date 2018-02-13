@@ -8,11 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.ftn.Frima.app.models.FrimaModel;
+import com.ftn.Frima.app.models.RacunModel;
 
 @Repository
 public interface FirmaRepository extends JpaRepository<FrimaModel, Long>{
 	public FrimaModel findById(Long Id);
 	public Collection<FrimaModel> findByPib(String pib);
 	public Collection<FrimaModel> findByPibNot(String pib);
-
+	public FrimaModel findByRacun(RacunModel racun);
 }
