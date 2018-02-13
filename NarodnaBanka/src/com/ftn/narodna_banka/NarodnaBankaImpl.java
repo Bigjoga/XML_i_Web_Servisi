@@ -31,7 +31,8 @@ import com.ftn.schema.mt910.Mt910;
                       serviceName = "NarodnaBankaService",
                       portName = "NarodnaBanka",
                       targetNamespace = "http://www.ftn.com/narodna_banka",
-                      wsdlLocation = "file:/C:/Users/Nikola Gajic/Documents/Github/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl",
+                      //wsdlLocation = "file:/C:/Users/Nikola Gajic/Documents/Github/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl",
+                      wsdlLocation ="file:/C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl",
                       endpointInterface = "com.ftn.narodna_banka.NarodnaBanka")
                       
 public class NarodnaBankaImpl implements NarodnaBanka {
@@ -42,6 +43,7 @@ public class NarodnaBankaImpl implements NarodnaBanka {
      * @see com.ftn.narodna_banka.NarodnaBanka#mt103ReceiveCB(com.ftn.schema.mt103.Mt103  mt103 )*
      */
     public com.ftn.schema.mt900.Mt900 mt103ReceiveCB(com.ftn.schema.mt103.Mt103 mt103) throws RTGSFault    { 
+       System.out.println("MT103: "+mt103.getIdPoruke()+" je stigao u NarodnuBanku!");
        Mt900 mt900=new Mt900();
        mt900.setIdPoruke(UUID.randomUUID().toString().replaceAll("-", ""));
        TBanka duznik=new TBanka();

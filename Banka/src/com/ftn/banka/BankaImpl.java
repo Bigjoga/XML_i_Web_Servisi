@@ -8,8 +8,11 @@ package com.ftn.banka;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.UUID;
 import java.util.logging.Logger;
+
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -17,17 +20,25 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.jws.soap.SOAPBinding;
 import javax.xml.bind.annotation.XmlSeeAlso;
+import javax.xml.namespace.QName;
 import javax.xml.ws.RequestWrapper;
+
+import com.ftn.narodna_banka.NarodnaBanka;
+import com.ftn.narodna_banka.RTGSFault;
 import com.ftn.schema.mt103.Mt103.Banke;
+
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+
+
 import com.ftn.Frima.app.models.FrimaModel;
 import com.ftn.schema.mt103.Mt103;
-
 import com.ftn.schema.mt103.TBanka;
 import com.ftn.schema.mt103.TPlacanje;
 import com.ftn.schema.mt103.TUplata;
+import com.ftn.schema.mt900.Mt900;
 import com.ftn.schema.mt910.Mt910;
 
 import requests.Requests;
@@ -120,6 +131,27 @@ public class BankaImpl implements Banka {
     			banke.setBankaDuznika(duznik);
     			banke.setBankaPoverioca(poverioc);
     			mt103.setBanke(banke);
+    			
+    			try {
+    				URL wsdlLocation = new URL("http://localhost:8080/narodna_banka/services/NarodnaBanka?wsdl");
+    				QName serviceName = new QName("http://www.ftn.com/narodna_banka", "NarodnaBankaService");
+    	            QName portName = new QName("http://www.ftn.com/narodna_banka", "NarodnaBanka");
+    	            
+    	            javax.xml.ws.Service service = javax.xml.ws.Service.create(wsdlLocation, serviceName);
+    				
+    				NarodnaBanka narodnaBanka = service.getPort(portName, NarodnaBanka.class); 
+    			
+    				Mt900 mt900=narodnaBanka.mt103ReceiveCB(mt103);
+    				System.out.println("Response from WS: " + mt900);
+    				
+    			} catch (MalformedURLException e) {
+    				e.printStackTrace();
+    			} catch (RTGSFault e) {
+					System.out.println("GRESKA KOD SLANJA MT103!");
+					e.printStackTrace();
+				}
+    			
+    			
     			
     			Mt910 mt910=new Mt910();
     			com.ftn.schema.mt910.TBanka pover=new com.ftn.schema.mt910.TBanka();

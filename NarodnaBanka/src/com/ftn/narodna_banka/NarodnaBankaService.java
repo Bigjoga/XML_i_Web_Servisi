@@ -15,8 +15,9 @@ import javax.xml.ws.Service;
  * 
  */
 @WebServiceClient(name = "NarodnaBankaService", 
-                  wsdlLocation = "file:/C:/Users/Nikola Gajic/Documents/Github/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl",
-                  targetNamespace = "http://www.ftn.com/narodna_banka") 
+               //   wsdlLocation = "file:/C:/Users/Nikola Gajic/Documents/Github/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl",
+                 	wsdlLocation = "file:/C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl",
+					targetNamespace = "http://www.ftn.com/narodna_banka") 
 public class NarodnaBankaService extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -26,11 +27,11 @@ public class NarodnaBankaService extends Service {
     static {
         URL url = null;
         try {
-            url = new URL("file:/C:/Users/Nikola Gajic/Documents/Github/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl");
+            url = new URL("file:/C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl");
         } catch (MalformedURLException e) {
             java.util.logging.Logger.getLogger(NarodnaBankaService.class.getName())
                 .log(java.util.logging.Level.INFO, 
-                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/Nikola Gajic/Documents/Github/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl");
+                     "Can not initialize the default wsdl from {0}", "file:/C:/Users/Rale/Desktop/Git/XML_i_Web_Servisi/NarodnaBanka/WEB-INF/wsdl/narodna_banka.wsdl");
         }
         WSDL_LOCATION = url;
     }
