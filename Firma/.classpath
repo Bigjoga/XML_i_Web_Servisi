@@ -28,5 +28,9 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/spring-beans-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/spring-context-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/spring-core-2.5.6.jar"/>
+	<classpathentry kind="lib" path="lib/spring-web-2.5.6.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
