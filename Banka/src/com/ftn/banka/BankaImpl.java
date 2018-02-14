@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -23,13 +24,25 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.namespace.QName;
 import javax.xml.ws.RequestWrapper;
 
+import com.ftn.narodna_banka.ClearingFault;
 import com.ftn.narodna_banka.NarodnaBanka;
 import com.ftn.narodna_banka.RTGSFault;
+import com.ftn.schema.mt102.Mt102;
+import com.ftn.schema.mt102.TPojedinacnoPlacanje;
+import com.ftn.schema.mt102.Mt102.PojedinacnaPlacanja;
 import com.ftn.schema.mt103.Mt103.Banke;
+
+
+
 
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+
+
+
+
+
 
 
 
@@ -73,7 +86,9 @@ public class BankaImpl implements Banka {
         FrimaModel fimaPoverioc=Baza.getFirmaByRacun(mt103.getBanke().getBankaPoverioca().getBankAccountNumber());
         fimaPoverioc.getRacun().setTrenutnoStanje(new BigDecimal(fimaPoverioc.getRacun().getTrenutnoStanje().intValue()+ mt103.getUplata().getIznos().intValue()));
         System.out.println("Firma Stanje: "+fimaPoverioc.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+fimaPoverioc.getRacun().getRezervisanaSredstva());
-
+        BankaModel CB=Baza.getBankByRacun("8080-000000000000-00");
+    	System.out.println("CB Stanje: "+CB.getRacunBanke().getTrenutnoStanje());
+		
     }
 
     /* (non-Javadoc)
@@ -169,8 +184,6 @@ public class BankaImpl implements Banka {
 					e.printStackTrace();
 				}
     			
-    			
-    			
     			Mt910 mt910=new Mt910();
     			com.ftn.schema.mt910.TBanka pover=new com.ftn.schema.mt910.TBanka();
     			pover.setBankAccountNumber("RACUN BANKE!");
@@ -188,35 +201,91 @@ public class BankaImpl implements Banka {
     			System.out.println("Banka Skida pare sa racuna klijenta");
     	    	firmaDuznik.getRacun().setRezervisanaSredstva(new BigDecimal(firmaDuznik.getRacun().getRezervisanaSredstva().intValue()- nalog.getPodaciOPrenosu().getIznos().intValue()));
     	    	System.out.println("Firma Novo Stanje: "+firmaDuznik.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+firmaDuznik.getRacun().getRezervisanaSredstva());
-
-    			
-    			
-    	//		String str = new Requests().makeGetRequest("http://localhost:8082/getFirma/19");
-    			
-		/*			FrimaModel firma = null;
-					try {
-						firma = new ObjectMapper().readValue(str, FrimaModel.class);
-					} catch (JsonParseException e) {
-						// TODO Auto-generated catch block
-						System.out.println("1!");
-						e.printStackTrace();
-					} catch (JsonMappingException e) {
-						// TODO Auto-generated catch block
-						System.out.println("1!");
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					System.out.println(firma.getNaziv());
-				
-    			*/
     			
     		}else{
     			System.out.println("Clearing & Settlement!");
     			
-    			
-    			
+    			if(Baza.getByDuznik(nalog.getPodaciOPrenosu().getPoverilacPrenos().getBrojRacuna()).size()<2){
+    				System.out.println("USAO U IF, NEMA DOVOLJNO NALOGA!");
+    				TPojedinacnoPlacanje pp=new TPojedinacnoPlacanje();
+        			pp.setIDNalogaZaPlacanje(nalog.getIdPoruke());
+        			pp.setDuznikNalogodavac(nalog.getDuznikNalogodavac());
+        			pp.setSvrhaPlacanja(nalog.getSvrhaPlacanja());
+        			pp.setPrimalacPoverilac(nalog.getPrimalacPoverilac());
+        			pp.setDatumNaloga(nalog.getPodaciOPrenosu().getDatumValute());
+        			pp.setRacunDuznika(nalog.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna());
+        			pp.setModelZaduzenja(nalog.getPodaciOPrenosu().getDuznikPrenos().getModel());
+        			pp.setPozivNaBrojZaduzenja(nalog.getPodaciOPrenosu().getDuznikPrenos().getPozivNaBroj());
+        			pp.setRacunPoverioca(nalog.getPodaciOPrenosu().getPoverilacPrenos().getBrojRacuna());
+        			pp.setModelOdobrenja(nalog.getPodaciOPrenosu().getPoverilacPrenos().getModel());
+        			pp.setPozivNaBrojOdobrenja(nalog.getPodaciOPrenosu().getPoverilacPrenos().getPozivNaBroj());
+        			pp.setIznos(nalog.getPodaciOPrenosu().getIznos());
+        			pp.setSifraValute(nalog.getPodaciOPrenosu().getOznakaValute());
+        			Baza.getListaPlacanja().add(pp);
+    				
+    			}else{
+    				System.out.println("Slanje mt102!");
+    				
+    				FrimaModel firmaDuznik=Baza.getFirmaByRacun(nalog.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna());
+        	    	BankaModel CB=Baza.getBankByRacun("8080-000000000000-00");
+    				
+    				
+    				Mt102 mt102 =new Mt102();
+        			mt102.setIDPoruke(UUID.randomUUID().toString().replaceAll("-", ""));
+        			
+        			com.ftn.schema.mt102.TBanka duznik=new com.ftn.schema.mt102.TBanka();
+        			com.ftn.schema.mt102.TBanka poverioc=new com.ftn.schema.mt102.TBanka();
+        			duznik.setBankAccountNumber(racunDuznik);
+        			duznik.setSWIFT(swiftD);
+        			poverioc.setBankAccountNumber(racunPoverilac);
+        			poverioc.setSWIFT(swiftP);
+        			
+        			List<TPojedinacnoPlacanje> lista=Baza.getByDuznik(nalog.getPodaciOPrenosu().getPoverilacPrenos().getBrojRacuna());
+        			mt102.setBankaDuznika(duznik);
+        			mt102.setBankaPoverioca(poverioc);
+        			mt102.setSifraValute(nalog.getPodaciOPrenosu().getOznakaValute());
+        			mt102.setDatum(nalog.getPodaciOPrenosu().getDatumValute());
+        			mt102.setDatumValute(nalog.getPodaciOPrenosu().getDatumValute());
+        			PojedinacnaPlacanja poj=new PojedinacnaPlacanja();
+    				int izns=0;
+        			for(TPojedinacnoPlacanje pojed:lista){
+    					poj.getPojedinacnoPlacanje().add(pojed);
+    					izns+=pojed.getIznos().intValue();
+    				}
+        			
+        			mt102.setPojedinacnaPlacanja(poj);
+    				mt102.setUkupanIznos(new BigDecimal(izns));
+    				
+    				System.out.println("Banka rezervise sredstva sa Racuna duznika!");
+        	    	System.out.println("Firma Stanje: "+firmaDuznik.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+firmaDuznik.getRacun().getRezervisanaSredstva());
+        	    	firmaDuznik.getRacun().setRezervisanaSredstva(new BigDecimal(firmaDuznik.getRacun().getRezervisanaSredstva().intValue()+ mt102.getUkupanIznos().intValue()));
+        	    	firmaDuznik.getRacun().setTrenutnoStanje(new BigDecimal(firmaDuznik.getRacun().getTrenutnoStanje().intValue()- mt102.getUkupanIznos().intValue()));
+        	    	System.out.println("Firma Novo Stanje: "+firmaDuznik.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+firmaDuznik.getRacun().getRezervisanaSredstva());
+        	    	
+        	    	CB.getRacunBanke().setTrenutnoStanje(new BigDecimal(CB.getRacunBanke().getTrenutnoStanje().intValue()+ mt102.getUkupanIznos().intValue()));
+        	    	System.out.println("CB Stanje: "+CB.getRacunBanke().getTrenutnoStanje());
+    				
+    				
+    				try {
+        				URL wsdlLocation = new URL("http://localhost:8080/narodna_banka/services/NarodnaBanka?wsdl");
+        				QName serviceName = new QName("http://www.ftn.com/narodna_banka", "NarodnaBankaService");
+        	            QName portName = new QName("http://www.ftn.com/narodna_banka", "NarodnaBanka");
+        	            
+        	            javax.xml.ws.Service service = javax.xml.ws.Service.create(wsdlLocation, serviceName);
+        				
+        				NarodnaBanka narodnaBanka = service.getPort(portName, NarodnaBanka.class); 
+        			
+        				Mt900 mt900=narodnaBanka.mt102ReceiveCB(mt102);
+        				System.out.println("Response from Narodna Banka: " + mt900);
+        				
+        			} catch (MalformedURLException e) {
+        				e.printStackTrace();
+        			} catch (ClearingFault e) {
+    					System.out.println("GRESKA KOD SLANJA MT102!");
+						e.printStackTrace();
+					}
+    				
+    			}
     			
     			
     		}
@@ -227,21 +296,22 @@ public class BankaImpl implements Banka {
     	}
     	
     	
-    	return false;
+    	return true;
     }
 
     /* (non-Javadoc)
      * @see com.ftn.banka.Banka#clearSettleBanka(com.ftn.schema.mt102.Mt102  mt102 ,)com.ftn.schema.mt910.Mt910  mt910 )*
      */
     public void clearSettleBanka(com.ftn.schema.mt102.Mt102 mt102,com.ftn.schema.mt910.Mt910 mt910) { 
-        LOG.info("Executing operation clearSettleBanka");
-        System.out.println(mt102);
-        System.out.println(mt910);
-        try {
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
+    	Baza.init();
+    	System.out.println("NarodnaBanka je poslala MT102: "+mt102.getIDPoruke() +" i MT910"+mt910.getIdPoruke());
+        FrimaModel fimaPoverioc=Baza.getFirmaByRacun(mt102.getBankaPoverioca().getBankAccountNumber());
+        fimaPoverioc.getRacun().setTrenutnoStanje(new BigDecimal(fimaPoverioc.getRacun().getTrenutnoStanje().intValue()+ mt102.getUkupanIznos().intValue()));
+        System.out.println("Firma Stanje: "+fimaPoverioc.getRacun().getTrenutnoStanje()+" Rezervisna Sredstva:  "+fimaPoverioc.getRacun().getRezervisanaSredstva());
+        BankaModel CB=Baza.getBankByRacun("8080-000000000000-00");
+    	System.out.println("CB Stanje: "+CB.getRacunBanke().getTrenutnoStanje());
+		
+    
     }
 
     /* (non-Javadoc)
