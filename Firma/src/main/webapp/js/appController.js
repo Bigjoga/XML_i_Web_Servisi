@@ -128,9 +128,9 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 		
 		$scope.preuzmiIzvod=function(brojRacuna,datumRacuna,brojPreseka){
 			console.log(brojRacuna,datumRacuna,brojPreseka);
-			
+			datumRacuna="2018-02-11";
 			appService.preuzmiIzvod(brojRacuna,datumRacuna,brojPreseka).then(function(response){
-				
+				console.log(response.data);
 			});
 		}
 }

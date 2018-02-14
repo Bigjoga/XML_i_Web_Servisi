@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ftn.schema.mt102.TPojedinacnoPlacanje;
+import com.ftn.schema.prenos.NalogZaPrenos;
 
 public class Baza {
 
@@ -13,6 +14,8 @@ public class Baza {
 	public static List<FrimaModel> listaFirmi=new ArrayList<FrimaModel>();
 	
 	public static List<TPojedinacnoPlacanje> listaPlacanja=new ArrayList<TPojedinacnoPlacanje>();
+	
+	public static List<NalogZaPrenos> listaNaloga=new ArrayList<NalogZaPrenos>();
 	
 	public static void init(){
 		//BAZA ZA BANKE
@@ -96,6 +99,18 @@ public class Baza {
 
 	public static void setListaFirmi(List<FrimaModel> listaFirmi) {
 		Baza.listaFirmi = listaFirmi;
+	}
+
+	
+
+	public static List<NalogZaPrenos> getListaNaloga() {
+		return listaNaloga;
+	}
+
+
+
+	public static void setListaNaloga(List<NalogZaPrenos> listaNaloga) {
+		Baza.listaNaloga = listaNaloga;
 	}
 
 

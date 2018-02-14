@@ -1,4 +1,8 @@
 package com.ftn.Frima.app.controller;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 import java.io.IOException;
@@ -18,9 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ftn.Frima.app.models.FakturaModel;
 import com.ftn.Frima.app.models.FrimaModel;
 import com.ftn.Frima.app.models.RacunModel;
+import com.ftn.Frima.app.models.izvod.Izvod;
 import com.ftn.Frima.app.models.nalog.NalogZaPrenos;
 import com.ftn.Frima.app.models.nalog.NalogZaPrenos.PodaciOPrenosu;
 import com.ftn.Frima.app.models.nalog.TOsobaPrenos;
+import com.ftn.Frima.app.models.zahtev.ZahtevZaIzvod;
 import com.ftn.Frima.app.service.BankaService;
 import com.ftn.Frima.app.service.FakturaService;
 import com.ftn.Frima.app.service.FirmaService;
@@ -132,7 +138,46 @@ public NalogZaPrenos kreirajNalogZaPlacanje(@PathVariable Long fakturaId,@PathVa
         return nalog;
 	} catch (Exception e) {
 		return nalog;
+	}
 }
+	
+	@RequestMapping(
+			value = "/izvodi/preuzmiIzvod/{brojRacuna}/{datumRacuna}/{brojPreseka}",
+			method = RequestMethod.POST,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public Izvod preuzmiIzvod(@PathVariable String brojRacuna,@PathVariable String datumRacuna,@PathVariable int brojPreseka) throws ParseException{
+		
+		
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		Date inputDate = dateFormat.parse(datumRacuna);
+		
+		ZahtevZaIzvod zahtev=new ZahtevZaIzvod();
+		zahtev.setBrojRacuna(brojRacuna);
+		GregorianCalendar c = new GregorianCalendar();
+		c.setTime(inputDate);
+		XMLGregorianCalendar date2 = null;
+		try {
+			date2 = DatatypeFactory.newInstance().newXMLGregorianCalendar(c);
+		} catch (DatatypeConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		zahtev.setDatum(date2);
+		zahtev.setRedniBrojPreseka((long)brojPreseka);
+		Izvod retVal = null;
+		try{
+			RacunModel racun=racunService.findByBrojRacuna(brojRacuna);
+			FrimaModel firma=firmaService.findByBrojRacuna(racun);
+
+	        if (firma != null) {
+	            retVal = bankaService.preuzmiIzvod(zahtev, firma);
+	        }
+			System.out.println(retVal.toString());
+	        return retVal;
+		} catch (Exception e) {
+			return retVal;
+	}
 		
 
 }

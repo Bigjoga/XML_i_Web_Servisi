@@ -2,12 +2,12 @@
 
 <div>
 	<label>Racun Duznika:</label>
-	<input ng-model="faktura.brojRacuna" ng-readonly="true">
+	<input ng-model="firma.racun.brojRacuna" ng-readonly="true">
 	<label>Datum:</label>
    	<input type="date" ng-model="datumRacuna" placeholder="Enter date" ></input>
 	<label>Broj preseka:</label>
-   	<input  ng-model="brojPreseka" ></input>
+   	<input type="number" ng-model="brojPreseka" ></input>
 	
 	
 </div>
-<button class="btn btn-primary" ng-click="preuzmiIzvod(faktura.brojRacuna,datumRacuna,brojPreseka)">Posalji Nalog</button>
+<button class="btn btn-primary" ng-click="preuzmiIzvod(firma.racun.brojRacuna,datumRacuna,brojPreseka)">Posalji Nalog</button>

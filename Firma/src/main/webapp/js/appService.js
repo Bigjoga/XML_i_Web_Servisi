@@ -42,7 +42,7 @@ services.service('appService', ['$http', '$rootScope',
 	};
 	
 	this.preuzmiIzvod=function(brojRacuna,datumRacuna,brojPreseka){
-		return $http.get("http://localhost:"+window.location.port+"/faktura/faktureZaNaplatu/"+pib);
+		return $http.post("http://localhost:"+window.location.port+"/firma/izvodi/preuzmiIzvod/"+brojRacuna+"/"+datumRacuna+"/"+brojPreseka);
 	}
 }
 ]);
