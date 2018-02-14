@@ -125,5 +125,13 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 			
 			
 		};
+		
+		$scope.preuzmiIzvod=function(brojRacuna,datumRacuna,brojPreseka){
+			console.log(brojRacuna,datumRacuna,brojPreseka);
+			
+			appService.preuzmiIzvod(brojRacuna,datumRacuna,brojPreseka).then(function(response){
+				
+			});
+		}
 }
 ]);
