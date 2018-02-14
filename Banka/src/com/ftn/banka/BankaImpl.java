@@ -308,45 +308,48 @@ public class BankaImpl implements Banka {
     	
     	//zaglavlje.setPrethondoSTANJE();
     	for(NalogZaPrenos np:Baza.getListaNaloga()){
-    		StavkaPreseka sp=new StavkaPreseka();
-    		sp.setDuznikNalogodavac(np.getDuznikNalogodavac());
-    		sp.setSvrhaPlacanja(np.getSvrhaPlacanja());
-    		sp.setPrimalacPoverilac(np.getPrimalacPoverilac());
-    		sp.setDatumNaloga(np.getDatumNaloga());
-    		PodaciOPrenosu podaci=new PodaciOPrenosu();
-    		podaci.setDatumValute(np.getDatumNaloga());
-    		TOsobaPrenos tod=new TOsobaPrenos();
-    		tod.setBrojRacuna(np.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna());
-    		tod.setModel(np.getPodaciOPrenosu().getDuznikPrenos().getModel());
-    		tod.setPozivNaBroj(np.getPodaciOPrenosu().getDuznikPrenos().getPozivNaBroj());
-    		podaci.setDuznikPrenos(tod);
-    		
-    		TOsobaPrenos top=new TOsobaPrenos();
-    		top.setBrojRacuna(np.getPodaciOPrenosu().getPoverilacPrenos().getBrojRacuna());
-    		top.setModel(np.getPodaciOPrenosu().getPoverilacPrenos().getModel());
-    		top.setPozivNaBroj(np.getPodaciOPrenosu().getPoverilacPrenos().getPozivNaBroj());
-    		podaci.setPoverilacPrenos(top);
-    		
-    		podaci.setIznos(np.getPodaciOPrenosu().getIznos());
-    		sp.setPodaciOPrenosu(podaci);
-    		if(zahtev.getBrojRacuna().equals(sp.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna())){
-    			sp.setSmer("T");
-    			brNaTeret++;
-    			ukupnoNaTeret+=np.getPodaciOPrenosu().getIznos().intValue();
-    			
-    		}else{
-    			sp.setSmer("K");
-    			brUKorist++;
-    			ukupnoUKorist+=np.getPodaciOPrenosu().getIznos().intValue();
+    		if(np.getDatumNaloga().equals(zahtev.getDatum())){
+	    		StavkaPreseka sp=new StavkaPreseka();
+	    		sp.setDuznikNalogodavac(np.getDuznikNalogodavac());
+	    		sp.setSvrhaPlacanja(np.getSvrhaPlacanja());
+	    		sp.setPrimalacPoverilac(np.getPrimalacPoverilac());
+	    		sp.setDatumNaloga(np.getDatumNaloga());
+	    		PodaciOPrenosu podaci=new PodaciOPrenosu();
+	    		podaci.setDatumValute(np.getDatumNaloga());
+	    		TOsobaPrenos tod=new TOsobaPrenos();
+	    		tod.setBrojRacuna(np.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna());
+	    		tod.setModel(np.getPodaciOPrenosu().getDuznikPrenos().getModel());
+	    		tod.setPozivNaBroj(np.getPodaciOPrenosu().getDuznikPrenos().getPozivNaBroj());
+	    		podaci.setDuznikPrenos(tod);
+	    		
+	    		TOsobaPrenos top=new TOsobaPrenos();
+	    		top.setBrojRacuna(np.getPodaciOPrenosu().getPoverilacPrenos().getBrojRacuna());
+	    		top.setModel(np.getPodaciOPrenosu().getPoverilacPrenos().getModel());
+	    		top.setPozivNaBroj(np.getPodaciOPrenosu().getPoverilacPrenos().getPozivNaBroj());
+	    		podaci.setPoverilacPrenos(top);
+	    		
+	    		podaci.setIznos(np.getPodaciOPrenosu().getIznos());
+	    		sp.setPodaciOPrenosu(podaci);
+	    		if(zahtev.getBrojRacuna().equals(sp.getPodaciOPrenosu().getDuznikPrenos().getBrojRacuna())){
+	    			sp.setSmer("T");
+	    			brNaTeret++;
+	    			ukupnoNaTeret+=np.getPodaciOPrenosu().getIznos().intValue();
+	    			
+	    		}else{
+	    			sp.setSmer("K");
+	    			brUKorist++;
+	    			ukupnoUKorist+=np.getPodaciOPrenosu().getIznos().intValue();
+	    		}
+	    		
+	    		presek.getStavkaPreseka().add(sp);
     		}
-    		
-    		presek.getStavkaPreseka().add(sp);
-    		
     		
     	}
     	
     	zaglavlje.setBrojPromenaUKorist(brUKorist);
 		zaglavlje.setBrojPromenaNaTeret(brNaTeret);
+		zaglavlje.setUkupnoNaTeret(new BigDecimal(ukupnoNaTeret));
+		zaglavlje.setUkupnoUKorist(new BigDecimal(ukupnoUKorist));
 		zaglavlje.setPrethodnoStanje(new BigDecimal(Baza.getFirmaByRacun(zahtev.getBrojRacuna()).getRacun().getTrenutnoStanje().intValue()+ukupnoNaTeret-ukupnoUKorist));
     	izvod.setZaglavlje(zaglavlje);
     	izvod.setPresek(presek);

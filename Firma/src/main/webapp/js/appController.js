@@ -128,10 +128,26 @@ app.controller('appController',['$http','$window','$location','$rootScope','$sco
 		
 		$scope.preuzmiIzvod=function(brojRacuna,datumRacuna,brojPreseka){
 			console.log(brojRacuna,datumRacuna,brojPreseka);
-			datumRacuna="2018-02-11";
+			console.log(datumRacuna);
+			datumRacuna=$scope.formatDate(datumRacuna);
+			console.log(datumRacuna);
 			appService.preuzmiIzvod(brojRacuna,datumRacuna,brojPreseka).then(function(response){
+				$scope.izvod=response.data;
 				console.log(response.data);
+				$window.location.href = "/#/izvod";
 			});
+		}
+		
+		$scope.formatDate=function(date) {
+		    var d = new Date(date),
+		        month = '' + (d.getMonth() + 1),
+		        day = '' + d.getDate(),
+		        year = d.getFullYear();
+
+		    if (month.length < 2) month = '0' + month;
+		    if (day.length < 2) day = '0' + day;
+
+		    return [year, month, day].join('-');
 		}
 }
 ]);

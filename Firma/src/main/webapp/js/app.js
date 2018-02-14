@@ -27,6 +27,10 @@ app.config(function($stateProvider,$urlRouterProvider) {
 		url:'/preuzimanjeIzvoda',
 		templateUrl:'views/preuzimanjeIzvoda.html',
 		controller:'appController'
+	}).state('izvod',{
+		url:'/izvod',
+		templateUrl:'views/izvod.html',
+		controller:'appController'
 	});
 	$urlRouterProvider.otherwise('/');
 	

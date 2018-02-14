@@ -1,0 +1,78 @@
+<h1 align="center">Izvod</h1>
+<h2>Zaglavlje</h2>
+<h3 >Broj Racuna: {{izvod.zaglavlje.brojRacuna}}</h3>
+<h3 >Datum Naloga: {{izvod.zaglavlje.datumNaloga}}</h3>
+<h3 >Broj Preseka: {{izvod.zaglavlje.brojPreseka}}</h3>
+<h3 >Prethodno Stanje: {{izvod.zaglavlje.prethodnoStanje}}</h3>
+<h3 >Broj Promena u Korist: {{izvod.zaglavlje.brojPromenaUKorist}}</h3>
+<h3 >Ukupno u Korist: {{izvod.zaglavlje.ukupnoUKorist}}</h3>
+<h3 >Broj Promena na Teret: {{izvod.zaglavlje.brojPromenaNaTeret}}</h3>
+<h3 >Ukupno na teret: {{izvod.zaglavlje.ukupnoNaTeret}}</h3>
+<h3 >Novo Stanje: {{izvod.zaglavlje.novoStanje}}</h3>
+
+
+<h2 >Lista Stavki:</h2>
+
+<table id="tabelaStavki"   style="width: 80%;"  border = 2 >
+	<thead>
+		<tr align="center">
+			<th>Datum naloga</th>
+	     	<th>Duznik-nalogodavac</th>
+	     	<th>Datum valute</th>
+			<th>Duznik-brRacuna</th>
+		    <th>Duznik-model</th>
+		    <th>Duznik-poziv na broj</th>
+		    <th>Iznos</th> 
+		    <th>Poverilac-brRacuna</th>
+		    <th>Poverilac-model</th>
+		    <th>Poverilac-poziv na broj</th>
+        	<th>Poverilac-prmalac</th>
+        	<th>Smer</th>
+        	<th>Svrha placanja</th>
+		</tr>
+  	</thead>
+  	<tbody>
+		<tr ng-repeat="stavka in izvod.presek.stavkaPreseka  ">
+			<td  align="center" >
+				{{ stavka.datumNaloga }}
+			</td>
+			
+			<td  align="center" >
+				{{  stavka.duznikNalogodavac }}
+			</td>
+			<td  align="center" >
+				{{  stavka.podaciOPrenosu.datumValute }}
+			</td>
+			<td  align="center" >
+				{{  stavka.podaciOPrenosu.duznikPrenos.brojRacuna }}
+			</td>
+			<td  align="center" >
+			    {{  stavka.podaciOPrenosu.duznikPrenos.model}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.podaciOPrenosu.duznikPrenos.pozivNaBroj}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.podaciOPrenosu.iznos}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.podaciOPrenosu.poverilacPrenos.brojRacuna}}
+			</td>
+			<td  align="center" >
+			    {{ stavka.podaciOPrenosu.poverilacPrenos.model}}
+			</td>	
+			<td  align="center" >
+			    {{ stavka.podaciOPrenosu.poverilacPrenos.pozivNaBroj}}
+			</td>	
+			<td  align="center" >
+			    {{ stavka.primalacPoverilac}}
+			</td>	
+			<td  align="center" >
+			    {{ stavka.smer}}
+			</td>	
+			<td  align="center" >
+			    {{ stavka.svrhaPlacanja}}
+			</td>	
+		</tr>
+	</tbody>
+</table>
