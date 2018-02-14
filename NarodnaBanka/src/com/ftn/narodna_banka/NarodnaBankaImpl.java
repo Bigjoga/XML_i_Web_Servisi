@@ -104,22 +104,54 @@ public class NarodnaBankaImpl implements NarodnaBanka {
      * @see com.ftn.narodna_banka.NarodnaBanka#mt102ReceiveCB(com.ftn.schema.mt102.Mt102  mt102 )*
      */
     public com.ftn.schema.mt900.Mt900 mt102ReceiveCB(com.ftn.schema.mt102.Mt102 mt102) throws ClearingFault    { 
+    	System.out.println("MT102: "+mt102.getIDPoruke()+" je stigao u NarodnuBanku!");
+        Mt900 mt900=new Mt900();
+        mt900.setIdPoruke(UUID.randomUUID().toString().replaceAll("-", ""));
+        TBanka duznik=new TBanka();
+        duznik.setSWIFT(mt102.getBankaDuznika().getSWIFT());
+        duznik.setBankAccountNumber(mt102.getBankaDuznika().getBankAccountNumber());
+        mt900.setIdPorukeNaloga("mt102");
+        mt900.setDatumValute(mt102.getDatum());
+        mt900.setIznos(mt102.getUkupanIznos());
+        mt900.setSifraValute(mt102.getSifraValute());
+        mt900.setBankaDuznik(duznik);
         
-    	
-    	for(TPojedinacnoPlacanje pp:   mt102.getPojedinacnaPlacanja().getPojedinacnoPlacanje()){
-    		
-    	}
-    	
-    	LOG.info("Executing operation mt102ReceiveCB");
-        System.out.println(mt102);
+        Mt910 mt910=new Mt910();
+        com.ftn.schema.mt910.TBanka poverilac=new com.ftn.schema.mt910.TBanka();
+        
+        mt910.setIdPoruke(UUID.randomUUID().toString().replaceAll("-", ""));
+        poverilac.setSWIFT(mt102.getBankaPoverioca().getSWIFT());
+        poverilac.setBankAccountNumber(mt102.getBankaPoverioca().getBankAccountNumber());
+        mt910.setIdPorukeNaloga("mt102");
+        mt910.setDatumValute(mt102.getDatum());
+        mt910.setIznos(mt102.getUkupanIznos());
+        mt910.setSifraValute(mt102.getSifraValute());
+        mt910.setBankaPoverilac(poverilac);
+
         try {
-            com.ftn.schema.mt900.Mt900 _return = null;
-            return _return;
-        } catch (java.lang.Exception ex) {
-            ex.printStackTrace();
-            throw new RuntimeException(ex);
-        }
+
+			URL wsdlLocation = new URL("http://localhost:"+mt910.getBankaPoverilac().getSWIFT()+"/banka/services/Banka?wsdl");
+			QName serviceName = new QName("http://www.ftn.com/banka", "BankaService");
+           QName portName = new QName("http://www.ftn.com/banka", "Banka");
+           
+           javax.xml.ws.Service service = javax.xml.ws.Service.create(wsdlLocation, serviceName);
+			
+			Banka banka = service.getPort(portName, Banka.class); 
+	    	   System.out.println("Narodna Banka salje MT102: "+mt102.getIDPoruke()+" Banci na portu: "+mt910.getBankaPoverilac().getSWIFT());
+	    	   System.out.println("Narodna Banka salje MT910: "+mt910.getIdPoruke()+" Banci na portu: "+mt910.getBankaPoverilac().getSWIFT());		
+			banka.clearSettleBanka(mt102, mt910);;
+			
+			
+			
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+       
+       System.out.println("Narodna Banka salje MT900: "+mt900.getIdPoruke()+" Banci na portu: "+mt102.getBankaDuznika().getSWIFT());
+       return mt900;
+    	
+        
         //throw new ClearingFault("ClearingFault...");
     }
-
+    
 }

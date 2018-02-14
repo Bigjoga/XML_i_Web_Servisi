@@ -4,12 +4,15 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ftn.schema.mt102.TPojedinacnoPlacanje;
+
 public class Baza {
 
 	public static List<BankaModel> listaBanki=new ArrayList<BankaModel>();
 	
 	public static List<FrimaModel> listaFirmi=new ArrayList<FrimaModel>();
-		
+	
+	public static List<TPojedinacnoPlacanje> listaPlacanja=new ArrayList<TPojedinacnoPlacanje>();
 	
 	public static void init(){
 		//BAZA ZA BANKE
@@ -144,4 +147,28 @@ public class Baza {
 		return null;
 		
 	}
+
+	public static List<TPojedinacnoPlacanje> getByDuznik(String racunPoverioca){
+		List<TPojedinacnoPlacanje> lista=new ArrayList<TPojedinacnoPlacanje>();
+		for(TPojedinacnoPlacanje pp:listaPlacanja){
+			if(pp.getRacunPoverioca().equals(racunPoverioca)){
+				lista.add(pp);
+			}
+		}
+
+		return lista;
+		
+	}
+
+	public static List<TPojedinacnoPlacanje> getListaPlacanja() {
+		return listaPlacanja;
+	}
+
+
+
+	public static void setListaPlacanja(List<TPojedinacnoPlacanje> listaPlacanja) {
+		Baza.listaPlacanja = listaPlacanja;
+	}
+	
+	
 }

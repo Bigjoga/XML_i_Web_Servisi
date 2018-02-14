@@ -11,5 +11,9 @@ INSERT INTO RACUN VALUES (5, '2222-555555555555-55', 0, 100000, 8086);
 Firme
 INSERT INTO firma VALUES (8081, 'FirmaAdresaA', 'FirmaA', '1234',  3);
 INSERT INTO firma VALUES (8082, 'FirmaAdresaB', 'FirmaB', '23456',  4);
+<<<<<<< HEAD
 INSERT INTO firma VALUES (8083, 'FirmaAdresa3', 'Firma3', '34567',  5);
 
+=======
+INSERT INTO firma VALUES (8083, 'FirmaAdresa3', 'Firma3', '34567',  5);	
+>>>>>>> b3f0928fd28762ac330573e9619c6bb83eff5238
